@@ -1,0 +1,92 @@
+###
+# Author's infomation
+###
+title: BLOG OF UHAN6
+email: uhan6@outlook.com
+baseurl: ""
+url: "https://uhan6.github.io"
+
+author:
+  name   : "uhan6"
+  avatar : "/assets/global/author_avatar.png"
+  bio    : ""
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/uhan6"
+    - label: "JueJin"
+      icon: "fas fa-fw fa-link"
+      url: "https://juejin.cn/user/2796746683745560"
+
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/uhan6"
+    - label: "JueJin"
+      icon: "fas fa-fw fa-link"
+      url: "https://juejin.cn/user/2796746683745560"
+
+
+###
+# Settings for Jekyll
+###
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jemoji
+  - jekyll-include-cache
+
+include:
+  - _pages
+
+exclude:
+  - .jekyll-cache/
+  - .sass-cache
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+
+###
+# Settings for minimal theme
+###
+theme: minimal-mistakes-jekyll
+minimal_mistakes_skin: default
+search: true
+
+markdown: kramdown
+permalink: /:categories/:title/
+paginate: 5
+paginate_path: /page:num/
+
+locale: zh-CN
+timezone: Asia/Shanghai
+
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: false
+      share: false
+      related: false
+  # _pages
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+ 
+category_archive:
+  type: liquid
+  path: /categories/
+tag_archive:
+  type: liquid
+  path: /tags/
