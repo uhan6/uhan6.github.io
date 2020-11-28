@@ -32,6 +32,7 @@ footer:
 # Settings for Jekyll
 ###
 plugins:
+  - github-pages
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
@@ -52,7 +53,7 @@ exclude:
 ###
 # Settings for minimal theme
 ###
-theme: minimal-mistakes-jekyll
+remote_theme: mmistakes/minimal-mistakes
 minimal_mistakes_skin: default
 search: true
 
