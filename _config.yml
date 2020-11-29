@@ -1,13 +1,13 @@
 ###
 # Author's infomation
 ###
-title: BLOG OF UHAN6
+title: BLOG OF HANG
 email: uhan6@outlook.com
 baseurl: ""
 url: "https://uhan6.github.io"
 
 author:
-  name   : "uhan6"
+  name   : "Hang"
   avatar : "/assets/global/author_avatar.png"
   bio    : ""
   links:
