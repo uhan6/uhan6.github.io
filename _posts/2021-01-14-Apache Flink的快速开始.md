@@ -10,7 +10,7 @@ tags: [ETL, Flink]
 作为ETL任务，我们需要指定输入源Source与输出源Sink。这里我使用本地MySQL同时作为输入和输出数据源。  
 
 ### 2.1 建立数据库
-```SQL
+```sql
 -- 输入数据库
 CREATE DATABASE `flink_source`;
 CREATE TABLE `user` (
@@ -39,7 +39,7 @@ CREATE TABLE `user_sink` (
 
 ### 2.2准备测试数据
 这里在输入源里插入两条数据，其中一条年龄17，另一条18。我们期望读取并filter出年龄大于等于18的user。
-```SQL
+```sql
 INSERT INTO flink_source.`user` (username,first_name,last_name,age,user_info,last_update_time) VALUES
 	 ('test18','test_first18','test_last18',18,'info18','2020-01-13 23:18:00.0'),
 	 ('test17','test_first17','test_last17',17,'info17','2020-01-13 23:17:00.0');
@@ -84,7 +84,7 @@ INSERT INTO flink_source.`user` (username,first_name,last_name,age,user_info,las
 ```
 ### 3.2 编写Java程序
 1. 对于输入，我们分别建立Entity对应表结构，建立Function来获取数据源。
-```Java
+```java
 // UserEntity.java
 @Data
 @Builder
@@ -99,7 +99,7 @@ public class UserEntity implements Serializable {
 }
 ```
 UserSourceFunction继承了Flink的RichSourceFunction，重写了关键方法，open()函数负责在读取数据库前调用，可以用来初始化数据库。run()函数是数据源的核心方法，sourceContext.collect()收集数据源发出的数据并交给Flink分布式去处理。cancel()做了错误处理。
-```Java
+```java
 // UserSourceFunction.java
 public class UserSourceFunction extends RichSourceFunction<UserEntity> {
     final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -154,7 +154,7 @@ public class UserSourceFunction extends RichSourceFunction<UserEntity> {
 ```
 
 2. 对于输出，因为我们是表对表，entity可以复用。所以我们只需要写输出源就可以了。输出源同样也复写open()，而与run()函数和cancel()函数对应，输出源的函数叫做invoke()和close()，我这里不多赘述。
-```Java
+```java
 // UserSinkFunction.java
 public class UserSinkFunction extends RichSinkFunction<UserEntity> {
     @Override
@@ -181,7 +181,7 @@ public class UserSinkFunction extends RichSinkFunction<UserEntity> {
 3. 处理逻辑的核心方法是在main函数中，而Flink的Job是按主函数来区分的，如果一个Jar文件有多个主函数，也可以分别作为多个Flink Job触发。我们建立一个FlinkApplication类，写上主函数，这将作为Flink执行的入口。  
 主函数代码在#1处需要获取Flink环境，这是Flink运行的基础。在#2处使用了lambda的语法写了一个filter来实现我们的逻辑。然后在最后声明执行。
    
-```Java
+```java
 public class FlinkApplication {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment(); // #1
@@ -248,15 +248,15 @@ public class FlinkApplication {
 ## 4. 部署运行
 访问`http://localhost:8081/`，点击左下角的`"Submit New Job"`，然后点击右上角的`"Add New"`选择我们打包好的Jar并上传，待上传完成后点击这个Jar会扩展出`"Submit"`按钮，点击提交这个Job。
 
-![](../assets/posts/2021-01/Apache%20Flink的快速开始_4_1.png)
+![](/assets/posts/2021-01/Apache%20Flink的快速开始_4_1.png)
 
 这时会跳转到Job的监控页面，待成功后我们会发现数据库的记录按照要求同步了age>=18的那条记录。
 
-![](../assets/posts/2021-01/Apache%20Flink的快速开始_4_2.png)
+![](/assets/posts/2021-01/Apache%20Flink的快速开始_4_2.png)
 
 如果任务不幸失败，可以点击TaskManagers下的LOG链接去查看报错信息。
 
-![](../assets/posts/2021-01/Apache%20Flink的快速开始_4_3.png)
+![](/assets/posts/2021-01/Apache%20Flink的快速开始_4_3.png)
 
 ## 5. 总结
 在初次使用Flink的过程中，我只是简单的使用JDBC做了表对表的拷贝，实际上Flink支持的功能强大的多。希望之后继续努力学习进步。  
